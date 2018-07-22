@@ -8,19 +8,9 @@
 </head>
 <body>
   <div id="app"></div>
-  <script src="./bundle.js"></script>
+  <script src="./js/bundle.js"></script>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    let socket = io();
-
-    socket.on('connect', () => {
-      console.log('Connected to the server');
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
-  </script>
+  <script src="./js/index.js"></script>
 </body>
 </html>
