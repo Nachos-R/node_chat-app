@@ -33584,6 +33584,10 @@ var _Messagess2 = _interopRequireDefault(_Messagess);
 
 var _messagess = __webpack_require__(/*! ./actions/messagess */ "./src/actions/messagess.js");
 
+var _LocationButton = __webpack_require__(/*! ./components/LocationButton.jsx */ "./src/components/LocationButton.jsx");
+
+var _LocationButton2 = _interopRequireDefault(_LocationButton);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33631,6 +33635,10 @@ var App = function (_Component) {
 
                 _this2.props.dispatch((0, _messagess.sendMessage)(message));
             });
+
+            socket.on('newLocationMessage', function (message) {
+                _this2.props.dispatch((0, _messagess.sendMessage)(message));
+            });
         }
     }, {
         key: 'render',
@@ -33639,6 +33647,7 @@ var App = function (_Component) {
                 'div',
                 null,
                 _react2.default.createElement(_ChatForm2.default, { socket: socket }),
+                _react2.default.createElement(_LocationButton2.default, { socket: socket }),
                 _react2.default.createElement(_Messagess2.default, null)
             );
         }
@@ -33770,6 +33779,84 @@ exports.default = ChatForm;
 
 /***/ }),
 
+/***/ "./src/components/LocationButton.jsx":
+/*!*******************************************!*\
+  !*** ./src/components/LocationButton.jsx ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LocationButton = function (_Component) {
+    _inherits(LocationButton, _Component);
+
+    function LocationButton() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, LocationButton);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = LocationButton.__proto__ || Object.getPrototypeOf(LocationButton)).call.apply(_ref, [this].concat(args))), _this), _this.sendLocation = function () {
+            if (!navigator.geolocation) {
+                return alert('Geolocation not supported by your brouser');
+            }
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                _this.props.socket.emit('createLocationMessage', {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                });
+            }, function () {
+                console.log('Unable to fetch position');
+            });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(LocationButton, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'button',
+                { onClick: this.sendLocation },
+                'Send location'
+            );
+        }
+    }]);
+
+    return LocationButton;
+}(_react.Component);
+
+;
+
+exports.default = LocationButton;
+
+/***/ }),
+
 /***/ "./src/components/Message.jsx":
 /*!************************************!*\
   !*** ./src/components/Message.jsx ***!
@@ -33792,11 +33879,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Message = function Message(props) {
 
-    return _react2.default.createElement(
-        'p',
+    return props.message.url ? _react2.default.createElement(
+        "p",
         null,
         props.message.from,
-        ': ',
+        ": ",
+        _react2.default.createElement(
+            "a",
+            { target: "_blank", href: props.message.url },
+            "My current location"
+        )
+    ) : _react2.default.createElement(
+        "p",
+        null,
+        props.message.from,
+        ": ",
         props.message.text
     );
 };

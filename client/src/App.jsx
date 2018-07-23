@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ChatForm from './components/ChatForm.jsx';
 import Messagess from './components/Messagess.jsx';
 import { sendMessage } from './actions/messagess';
+import LocationButton from './components/LocationButton.jsx';
 
 let socket = io();
 
@@ -26,12 +27,17 @@ class App extends Component{
 
             this.props.dispatch(sendMessage(message));
         });
+
+        socket.on('newLocationMessage', (message) => {
+            this.props.dispatch(sendMessage(message));
+        });
     }
 
     render(){
         return(
             <div>
                 <ChatForm socket={socket}/>
+                <LocationButton socket={socket}/>
                 <Messagess />
             </div>
         );
