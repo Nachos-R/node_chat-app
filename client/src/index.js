@@ -1,8 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from 'react-redux'
 
-const Index = () => {
-  return <div>Welcome to the Chat App</div>;
-};
+import App from './App.jsx';
+import configureStore from './store/configureStore';
 
-ReactDOM.render(<Index />, document.getElementById("app"));
+const store = configureStore();
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById("app"));

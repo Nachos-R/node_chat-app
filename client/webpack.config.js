@@ -1,11 +1,17 @@
 const path = require('path');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+
+// const htmlPlugin = new HtmlWebPackPlugin({
+//     template: "./src/index.html",
+//     filename: "./index.html"
+// });
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
 
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'public/js')
+        path: path.join(__dirname, 'public', 'js'),
+        filename: 'bundle.js'
     },
 
     devtool: 'source-map',
@@ -14,14 +20,20 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader'
-                }
+                loader: 'babel-loader',
+                test: /\.jsx?$/,
+                exclude: /node_modules/
             }
         ]
     },
+
+    devServer: {
+        contentBase: path.join(__dirname, 'public'),
+        historyApiFallback: true,
+        publicPath: '/js/'
+    }
+
+    // plugins: [htmlPlugin],
 
     // resolve: {
     //     extensions: ['js', 'jsx', 'json']
