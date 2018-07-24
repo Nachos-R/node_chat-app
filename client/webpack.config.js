@@ -1,41 +1,39 @@
 const path = require('path');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
 
-// const htmlPlugin = new HtmlWebPackPlugin({
-//     template: "./src/index.html",
-//     filename: "./index.html"
-// });
+module.exports = () => {
 
-module.exports = {
-    entry: ['babel-polyfill', './src/index.js'],
+    return {
+        entry: ['babel-polyfill', './src/index.js'],
 
-    output: {
-        path: path.join(__dirname, 'public', 'js'),
-        filename: 'bundle.js'
-    },
+        output: {
+            path: path.join(__dirname, 'public', 'js'),
+            filename: 'bundle.js'
+        },
 
-    devtool: 'source-map',
-    
-    
-    module: {
-        rules: [
-            {
+        devtool: 'source-map',
+        
+        
+        module: {
+            rules: [{
                 loader: 'babel-loader',
                 test: /\.jsx?$/,
                 exclude: /node_modules/
-            }
-        ]
-    },
+            }, {
+                test:/\.css$/,
+                use:['style-loader','css-loader']
+            }]
+        },
 
-    devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        historyApiFallback: true,
-        publicPath: '/js/'
-    }
+        devServer: {
+            contentBase: path.join(__dirname, 'public'),
+            historyApiFallback: true,
+            publicPath: '/js/'
+        }
 
-    // plugins: [htmlPlugin],
+        // plugins: [htmlPlugin],
 
-    // resolve: {
-    //     extensions: ['js', 'jsx', 'json']
-    // }
+        // resolve: {
+        //     extensions: ['js', 'jsx', 'json']
+        // }
+    };
 };

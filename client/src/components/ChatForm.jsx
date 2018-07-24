@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+
+import LocationButton from './LocationButton.jsx';
 
 class ChatForm extends Component{
     state = {
@@ -28,16 +32,25 @@ class ChatForm extends Component{
 
     render(){
         return (
-            <form id="message-form" onSubmit={this.sendMessage}>
-                <input 
-                    type="text"
-                    placeholder="Message"
-                    value={this.state.message}
-                    onChange={this.onMessageChange}
-                    name="option"
-                />
-                <button>Send</button>
-            </form>
+            <div className="chat-form">
+                <form id="message-form" onSubmit={this.sendMessage}>
+                    <Input 
+                        className="textInput"
+                        type="text"
+                        placeholder="Message"
+                        value={this.state.message}
+                        onChange={this.onMessageChange}
+                        name="option"
+                        inputProps={{
+                            'aria-label': 'Description',
+                        }}
+                        autoFocus
+                        autoComplete="off"
+                    />
+                    <Button className="sendButton" variant="contained" color="primary" type="submit">Send</Button>
+                    <LocationButton socket={this.props.socket}/>
+                </form>
+            </div>
         );
     }
 };

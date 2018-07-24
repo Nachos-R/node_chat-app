@@ -1,4 +1,5 @@
 import React, {Component} from  'react';
+import Button from '@material-ui/core/Button';
 
 class LocationButton extends Component{
     sendLocation = () => {
@@ -18,7 +19,7 @@ class LocationButton extends Component{
 
     render() {
         return (
-            <button onClick={this.sendLocation}>Send location</button>
+            <Button className="locationButton" variant="contained" color="primary" onClick={this.sendLocation}>Send location</Button>
         );
     }
 };

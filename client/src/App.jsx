@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ChatForm from './components/ChatForm.jsx';
 import Messagess from './components/Messagess.jsx';
 import { sendMessage } from './actions/messagess';
-import LocationButton from './components/LocationButton.jsx';
+import UserPanel from './components/UsersPanel.jsx';
 
 let socket = io();
 
@@ -36,9 +36,9 @@ class App extends Component{
     render(){
         return(
             <div>
-                <ChatForm socket={socket}/>
-                <LocationButton socket={socket}/>
+                <UserPanel />
                 <Messagess />
+                <ChatForm socket={socket}/>
             </div>
         );
     }
