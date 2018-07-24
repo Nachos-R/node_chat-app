@@ -23,8 +23,6 @@ class App extends Component{
         });
 
         socket.on('newMessage', (message) => {
-            console.log('new email', message);
-
             this.props.dispatch(sendMessage(message));
         });
 

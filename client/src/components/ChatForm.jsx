@@ -20,7 +20,7 @@ class ChatForm extends Component{
 
         const message = {
             from: 'User',
-            text: this.state.message
+            text: this.state.message,
         };
 
         this.props.socket.emit('createMessage', message, () => {
