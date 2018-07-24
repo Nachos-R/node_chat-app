@@ -5,9 +5,17 @@ const Message = (props) => {
     const formattedTime = moment(props.message.createdAt).format('h:mm a');
 
     return (
-        props.message.url ?
-        <p>{props.message.from} {formattedTime}: <a target="_blank" href={props.message.url}>My current location</a></p> :
-        <p>{props.message.from} {formattedTime}: {props.message.text}</p>
+        <div className="message">
+            <div className="message__title">
+                <h4>{props.message.from}</h4>
+                <span>{formattedTime}</span>
+            </div>
+            <div className="message__body">
+                {props.message.url ? 
+                <a target="_blank" href={props.message.url}>My current location</a> : 
+                <p>{props.message.text}</p> }
+            </div>
+        </div>
     );
 };
 

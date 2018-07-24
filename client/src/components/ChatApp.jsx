@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ChatForm from './components/ChatForm.jsx';
-import Messagess from './components/Messagess.jsx';
-import { sendMessage } from './actions/messagess';
-import UserPanel from './components/UsersPanel.jsx';
+import ChatForm from './ChatForm.jsx';
+import Messagess from './Messagess.jsx';
+import { sendMessage } from './../actions/messagess';
+import UserPanel from './UsersPanel.jsx';
 
 let socket = io();
 
-class App extends Component{
+class ChatApp extends Component{
     state = {
         messagess: []
     };
@@ -42,4 +42,4 @@ class App extends Component{
     }
 };
 
-export default connect()(App);
+export default connect()(ChatApp);
