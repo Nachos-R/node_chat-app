@@ -5,8 +5,6 @@ import io from 'socket.io-client';
 
 import LocationButton from './LocationButton.jsx';
 
-const socket = io.connect('http://localhost:3000/chat');
-
 class ChatForm extends Component{
     state = {
         message: ''
@@ -26,7 +24,7 @@ class ChatForm extends Component{
             text: this.state.message,
         };
 
-        socket.emit('createMessage', message, () => {
+        this.props.socket.emit('createMessage', message, () => {
             
         });
         
@@ -51,7 +49,7 @@ class ChatForm extends Component{
                         autoComplete="off"
                     />
                     <Button className="sendButton" variant="contained" color="primary" type="submit">Send</Button>
-                    <LocationButton socket={socket}/>
+                    <LocationButton socket={this.props.socket}/>
                 </form>
             </div>
         );

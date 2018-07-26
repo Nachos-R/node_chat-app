@@ -75416,36 +75416,55 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var chat = _socket2.default.connect('http://localhost:3000');
-
 var ChatApp = function (_Component) {
     _inherits(ChatApp, _Component);
 
     function ChatApp() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, ChatApp);
 
-        return _possibleConstructorReturn(this, (ChatApp.__proto__ || Object.getPrototypeOf(ChatApp)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChatApp.__proto__ || Object.getPrototypeOf(ChatApp)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            socket: null
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(ChatApp, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            var socket = _socket2.default.connect('http://localhost:3000');
 
-            console.log('chat app');
-            chat.on('connect', function () {
-                console.log('Connected to the server!');
+            socket.on('connect', function () {
+                console.log(window.location.search);
             });
 
-            chat.on('disconnect', function () {
+            socket.on('disconnect', function () {
                 console.log('Disconnected from server');
             });
+            if (!this.state.socket) {
+                this.setState(function () {
+                    return { socket: socket };
+                });
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            var _this2 = this;
 
-            chat.on('newMessage', function (message) {
+            var socket = this.state.socket;
+
+            socket.on('newMessage', function (message) {
                 _this2.props.dispatch((0, _messagess.sendMessage)(message));
             });
 
-            chat.on('newLocationMessage', function (message) {
+            socket.on('newLocationMessage', function (message) {
                 _this2.props.dispatch((0, _messagess.sendMessage)(message));
             });
         }
@@ -75457,7 +75476,7 @@ var ChatApp = function (_Component) {
                 null,
                 _react2.default.createElement(_UsersPanel2.default, null),
                 _react2.default.createElement(_Messagess2.default, null),
-                _react2.default.createElement(_ChatForm2.default, { socket: chat })
+                _react2.default.createElement(_ChatForm2.default, { socket: this.state.socket })
             );
         }
     }]);
@@ -75515,8 +75534,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var socket = _socket2.default.connect('http://localhost:3000/chat');
-
 var ChatForm = function (_Component) {
     _inherits(ChatForm, _Component);
 
@@ -75547,7 +75564,7 @@ var ChatForm = function (_Component) {
                 text: _this.state.message
             };
 
-            socket.emit('createMessage', message, function () {});
+            _this.props.socket.emit('createMessage', message, function () {});
 
             e.target.elements.option.value = '';
         }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -75580,7 +75597,7 @@ var ChatForm = function (_Component) {
                         { className: 'sendButton', variant: 'contained', color: 'primary', type: 'submit' },
                         'Send'
                     ),
-                    _react2.default.createElement(_LocationButton2.default, { socket: socket })
+                    _react2.default.createElement(_LocationButton2.default, { socket: this.props.socket })
                 )
             );
         }
@@ -75661,14 +75678,11 @@ var JoinPage = function (_Component) {
         }, _this.join = function (e) {
             e.preventDefault();
             _this.props.dispatch((0, _login.login)(true));
-            _this.props.history.push('/?name=' + _this.state.name + '&room=' + _this.state.roomName);
+            _this.props.history.push('/chat/?name=' + _this.state.name + '&room=' + _this.state.roomName);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(JoinPage, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -76179,15 +76193,10 @@ var AppRouter = function AppRouter(props) {
         _reactRouterDom.BrowserRouter,
         null,
         _react2.default.createElement(
-            _react2.default.Fragment,
+            _reactRouterDom.Switch,
             null,
-            props.login.loggedIn ? _react2.default.createElement(_ChatApp2.default, null) : _react2.default.createElement(_reactRouterDom.Redirect, { from: '/', to: '/login' }),
-            _react2.default.createElement(
-                _reactRouterDom.Switch,
-                null,
-                _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _ChatApp2.default, exact: true }),
-                _react2.default.createElement(_reactRouterDom.Route, { path: '/login', component: _JoinPage2.default })
-            )
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _JoinPage2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/chat', component: _ChatApp2.default })
         )
     );
 };

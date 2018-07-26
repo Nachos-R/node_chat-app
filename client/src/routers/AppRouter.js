@@ -6,18 +6,10 @@ import { connect } from 'react-redux';
 
 const AppRouter = (props) => (
     <BrowserRouter>
-        <React.Fragment>
-            {
-                props.login.loggedIn ? 
-                <ChatApp /> :
-                <Redirect from="/" to="/login" />
-            }
-            
-            <Switch>
-                <Route path="/" component={ChatApp} exact/>
-                <Route path="/login" component={JoinPage} />
-            </Switch>
-        </React.Fragment>
+        <Switch>
+            <Route exact path="/" component={JoinPage} />
+            <Route path="/chat" component={ChatApp}/>
+        </Switch>
     </BrowserRouter>
 );
 

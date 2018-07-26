@@ -10,10 +10,6 @@ class JoinPage extends Component{
         roomName: ''
     };
 
-    componentDidMount(){
-        
-    }
-
     onNameChange = (e) => {
         const name = e.target.value;
         this.setState(() => ({name}));
@@ -27,7 +23,7 @@ class JoinPage extends Component{
     join = (e) => {
         e.preventDefault();
         this.props.dispatch(login(true));
-        this.props.history.push(`/?name=${this.state.name}&room=${this.state.roomName}`);
+        this.props.history.push(`/chat/?name=${this.state.name}&room=${this.state.roomName}`);
     };
 
     render(){
