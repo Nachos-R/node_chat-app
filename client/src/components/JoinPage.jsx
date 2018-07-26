@@ -1,11 +1,34 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
-class JoinPage extends Component{
+import { login } from './../actions/login';
 
-    join = () => {
-        this.props.history.push('/chat');
+class JoinPage extends Component{
+    state = {
+        name: '',
+        roomName: ''
+    };
+
+    componentDidMount(){
+        
     }
+
+    onNameChange = (e) => {
+        const name = e.target.value;
+        this.setState(() => ({name}));
+    };
+
+    onRoomNameChange = (e) => {
+        const roomName = e.target.value;
+        this.setState(() => ({roomName}));
+    };
+
+    join = (e) => {
+        e.preventDefault();
+        this.props.dispatch(login(true));
+        this.props.history.push(`/?name=${this.state.name}&room=${this.state.roomName}`);
+    };
 
     render(){
         return (
@@ -17,11 +40,11 @@ class JoinPage extends Component{
                         </div>
                         <div className="form-field">
                             <label>Display name</label>
-                            <input type="text" name="name" autoFocus />
+                            <input type="text" name="name" onChange={this.onNameChange} autoFocus />
                         </div>
                         <div className="form-field">
                             <label>Room name</label>
-                            <input type="text" name="room" />
+                            <input type="text" name="room" onChange={this.onRoomNameChange} />
                         </div>
                         <div className="form-field">
                             <Button variant="contained" color="primary" type="submit">Join</Button>
@@ -33,4 +56,4 @@ class JoinPage extends Component{
     }
 };
 
-export default JoinPage;
+export default connect()(JoinPage);

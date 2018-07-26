@@ -2,14 +2,27 @@ import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import JoinPage from '../components/JoinPage.jsx';
 import ChatApp from '../components/ChatApp.jsx';
+import { connect } from 'react-redux';
 
 const AppRouter = (props) => (
     <BrowserRouter>
-        <Switch>
-            <Route path="/" component={JoinPage} exact/>
-            <Route path="/chat" component={ChatApp} />
-        </Switch>
+        <React.Fragment>
+            {
+                props.login.loggedIn ? 
+                <ChatApp /> :
+                <Redirect from="/" to="/login" />
+            }
+            
+            <Switch>
+                <Route path="/" component={ChatApp} exact/>
+                <Route path="/login" component={JoinPage} />
+            </Switch>
+        </React.Fragment>
     </BrowserRouter>
 );
 
-export default AppRouter;
+const mapStateToProps = (state) => ({
+    login: state.login
+});
+
+export default connect(mapStateToProps)(AppRouter);

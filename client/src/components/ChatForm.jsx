@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
+import io from 'socket.io-client';
 
 import LocationButton from './LocationButton.jsx';
+
+const socket = io.connect('http://localhost:3000/chat');
 
 class ChatForm extends Component{
     state = {
@@ -23,7 +26,7 @@ class ChatForm extends Component{
             text: this.state.message,
         };
 
-        this.props.socket.emit('createMessage', message, () => {
+        socket.emit('createMessage', message, () => {
             
         });
         
@@ -48,7 +51,7 @@ class ChatForm extends Component{
                         autoComplete="off"
                     />
                     <Button className="sendButton" variant="contained" color="primary" type="submit">Send</Button>
-                    <LocationButton socket={this.props.socket}/>
+                    <LocationButton socket={socket}/>
                 </form>
             </div>
         );

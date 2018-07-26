@@ -7,17 +7,14 @@ import Message from './Message.jsx';
 class Messages extends Component{
     constructor(props){
         super(props);
+        this.panel = React.createRef();
     }
 
     scrollToBottom = () => {
-        // const { messageList } = this.refs;
-        // const scrollHeight = messageList.scrollHeight;
-        // const height = messageList.clientHeight;
-        // const maxScrollTop = scrollHeight - height;
-        // ReactDOM.findDOMNode(messageList).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-
-        const messagess = document.getElementsByClassName('.messagess');
-        console.log(messagess);
+        const scrollHeight = this.panel.scrollHeight;
+        const height = this.panel.clientHeight;
+        const maxScrollTop = scrollHeight - height;
+        ReactDOM.findDOMNode(this.panel).scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
 
     componentDidUpdate() {
@@ -26,7 +23,7 @@ class Messages extends Component{
     
     render() {
         return (
-            <div className="messagess">
+            <div className="messagess" ref={(panel) => {this.panel = panel }}>
                 {this.props.messages.map((message, index) => <Message key={index} message={message} />)}
             </div>
         );
