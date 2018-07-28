@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 
+import Header from './Header.jsx';
 import ChatForm from './ChatForm.jsx';
 import Messagess from './Messagess.jsx';
 import { sendMessage } from './../actions/messagess';
@@ -14,7 +15,9 @@ class ChatApp extends Component{
         super(props)
         const socket = io.connect('http://localhost:3000');
         this.state = {
-            socket
+            socket,
+            roomName: '',
+            visibility: false
         }
     }
 
@@ -31,6 +34,7 @@ class ChatApp extends Component{
                     alert(err);
                 } else {
                     console.log('no error');
+                    this.setState(() => ({roomName: params.room}));
                 }
             });
         });
@@ -54,13 +58,18 @@ class ChatApp extends Component{
         });	
     }
 
+    toggleUserPanel = () => {
+        this.setState(() => ({visibility: !this.state.visibility}));
+    }
+
     render(){
         return(
-            <div>
-                <UserPanel socket={this.state.socket}/>
+            <React.Fragment>
+                <Header onClick={this.toggleUserPanel} roomName={this.state.roomName}/>
+                <UserPanel socket={this.state.socket} visibility={this.state.visibility}/>
                 <Messagess />
                 <ChatForm socket={this.state.socket}/>
-            </div>
+            </React.Fragment>
         );
     }
 };

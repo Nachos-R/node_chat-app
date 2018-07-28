@@ -28,7 +28,7 @@ class JoinPage extends Component{
     join = (e) => {
         e.preventDefault();
         this.props.dispatch(login(true));
-        this.props.history.push(`/chat/?name=${this.state.name}&room=${this.state.roomName}`);
+        this.props.history.push(`/chat?name=${this.state.name}&room=${this.state.roomName}`);
     };
 
     render(){
@@ -41,11 +41,11 @@ class JoinPage extends Component{
                         </div>
                         <div className="form-field">
                             <label>Display name</label>
-                            <input type="text" name="name" onChange={this.onNameChange} autoFocus />
+                            <input type="text" name="name" onChange={this.onNameChange} autoFocus autoComplete="off"/>
                         </div>
                         <div className="form-field">
                             <label>Room name</label>
-                            <input type="text" name="room" onChange={this.onRoomNameChange} />
+                            <input type="text" name="room" onChange={this.onRoomNameChange} autoComplete="off"/>
                         </div>
                         <div className="form-field">
                             <Button variant="contained" color="primary" type="submit">Join</Button>

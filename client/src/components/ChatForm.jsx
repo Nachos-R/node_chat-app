@@ -27,7 +27,7 @@ class ChatForm extends Component{
             
         });
         
-        e.target.elements.option.value = '';
+        this.setState(() => ({message: ''}));
     }
 
     render(){
