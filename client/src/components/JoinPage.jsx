@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
 import { login } from './../actions/login';
+import { clearMessages } from '../actions/messagess';
 
 class JoinPage extends Component{
     state = {
         name: '',
         roomName: ''
     };
+
+    componentDidMount(){
+        this.props.dispatch(clearMessages());
+    }
 
     onNameChange = (e) => {
         const name = e.target.value;

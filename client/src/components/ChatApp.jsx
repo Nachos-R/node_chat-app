@@ -6,29 +6,44 @@ import ChatForm from './ChatForm.jsx';
 import Messagess from './Messagess.jsx';
 import { sendMessage } from './../actions/messagess';
 import UserPanel from './UsersPanel.jsx';
+import { deparam } from '../utils/deparam';
 
 class ChatApp extends Component{
-    state = {
-        socket: null,
-    };
+    
+    constructor(props){
+        super(props)
+        const socket = io.connect('http://localhost:3000');
+        this.state = {
+            socket
+        }
+    }
 
     componentDidMount() {
-        const socket = io.connect('http://localhost:3000');
+        const socket = this.state.socket;
 
-		socket.on('connect', () => {
-            console.log(window.location.search);
+        socket.on('connect', () => {
+            let params = deparam(window.location.search);
+
+            socket.emit('join', params, (err) => {
+                if(err){
+                    
+                    this.props.history.push('/');
+                    alert(err);
+                } else {
+                    console.log('no error');
+                }
+            });
         });
 
         socket.on('disconnect', () => {
             console.log('Disconnected from server');
         });
-		if(!this.state.socket){
-            this.setState(() => ({socket}));
-        }
-    }
 
-    componentDidUpdate(){
-        const socket = this.state.socket;
+        // socket.on('updateUserList', (users) => {
+        //     console.log(users);
+        //     this.props.dispatch(setUsers(users));
+        // });
+        
 
         socket.on('newMessage', (message) => {
             this.props.dispatch(sendMessage(message));
@@ -36,13 +51,13 @@ class ChatApp extends Component{
 
         socket.on('newLocationMessage', (message) => {
             this.props.dispatch(sendMessage(message));
-        });
+        });	
     }
 
     render(){
         return(
             <div>
-                <UserPanel />
+                <UserPanel socket={this.state.socket}/>
                 <Messagess />
                 <ChatForm socket={this.state.socket}/>
             </div>

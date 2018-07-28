@@ -4,7 +4,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.users-panel{
+#users{
     position: absolute;
     height: 100vh;
     width: 20%;
@@ -13,10 +13,19 @@
     box-sizing: border-box;
 }
 
-.users-panel h3{
+#users h3{
     font-weight: bolder;
     color: #fff;
     font-size: 26px;
+    margin-bottom: 10px;
+}
+
+#users li {
+    list-style: none;
+    background: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .messagess{

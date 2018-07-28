@@ -20,7 +20,6 @@ class ChatForm extends Component{
         e.preventDefault();
 
         const message = {
-            from: 'User',
             text: this.state.message,
         };
 

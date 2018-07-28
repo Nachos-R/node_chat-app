@@ -7,6 +7,8 @@ export default (state = messagessReducerDefaultState, action) => {
                 ...state,
                 action.message
             ];
+        case 'CLEAR_MESSAGES':
+            return [];
         default:
             return state;
     }
