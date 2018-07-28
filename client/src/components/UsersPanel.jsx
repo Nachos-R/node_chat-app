@@ -15,8 +15,8 @@ class UserPanel extends Component{
 
     render(){
         return (
-            this.props.visibility && 
-            <div id="users">
+             
+            <div id="users" className={this.props.visibility ? "show" : "hide"}>
                 <h3>People</h3>
                 <ul>
                     {this.props.users.map((user, index) => (<li key={index}>{user.name}</li>))}

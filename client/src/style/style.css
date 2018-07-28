@@ -132,10 +132,13 @@
     .Header-root-35{
         display: block;
     }
-    #users{
+    #users.show{
         width: 90%;
         padding-top: 50px;
         z-index: 10;
+    }
+    #users.hide{
+        display: none;
     }
     .messagess{
         float: none;

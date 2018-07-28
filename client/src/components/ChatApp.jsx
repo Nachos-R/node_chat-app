@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
 
 import Header from './Header.jsx';
 import ChatForm from './ChatForm.jsx';
@@ -13,11 +12,11 @@ class ChatApp extends Component{
     
     constructor(props){
         super(props)
-        const socket = io.connect('http://localhost:3000');
+        const socket = io();
         this.state = {
             socket,
             roomName: '',
-            visibility: false
+            visibility: true
         }
     }
 
